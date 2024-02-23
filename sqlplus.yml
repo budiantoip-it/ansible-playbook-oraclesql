@@ -1,0 +1,21 @@
+# How to run: ansible-playbook playbook.yml
+- name: Get Oracle Database Names
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Set the file executable
+      ansible.builtin.file:
+        path: get_db_name.sh
+        mode: +x
+      delegate_to: localhost
+    - name: Run script locally
+      command: ./get_db_name.sh {{ db_username }} {{ db_password }} {{ db_host }} {{ db_sid }}
+      args:
+        chdir: "{{ playbook_dir }}"
+      delegate_to: localhost
+      register: output
+  
+    - name: Display output of script that was run from remote server
+      debug:
+        var: output.stdout
