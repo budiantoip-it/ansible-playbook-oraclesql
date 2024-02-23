@@ -1,12 +1,12 @@
 # How to run: ansible-playbook playbook.yml
 - name: Get Oracle Database Names
-  hosts: localhost
+  hosts: all
   gather_facts: false
 
   tasks:
     - name: Import role ar_orcl
       set_fact:
-        ar_orcl_db_sql_user: "{{ db_username }}"
+        ar_orcl_db_sql_user: "{{ ar_orcl_db_sql_user }}"
     # Installed the cx_Oracle dependency manually, by running this command from the terminal:
     # /usr/libexec/platform-python -m pip install --user cx_Oracle
     # - name: Install cx_Oracle Python module
@@ -15,14 +15,14 @@
     #     state: present
     - name: Execute SQL to get Schemas from DB
       ibre5041.ansible_oracle_modules.oracle_sql:
-        username: "{{ db_username }}"
-        password: "{{ db_password }}"
-        hostname: "{{ db_host }}"
-        service_name: "{{ db_sid }}"
-        port: "{{ db_port }}"
+        username: "{{ ar_orcl_db_sql_user }}"
+        password: "{{ ar_orcl_db_sql_pwd }}"
+        mode: "{{ 'sysdba' if ar_orcl_db_sql_user|upper == 'SYS' else 'normal' }}"
+        hostname: "{{ ar_orcl_tnode }}"
+        service_name: "{{ ar_orcl_svc_name }}"
+        port: "{{ ar_orcl_svc_port }}"
         #sql: "SELECT username FROM dba_users"
         sql: "SELECT NAME FROM v$database"
-      delegate_to: 127.0.0.1
       register: schema_result
     - name: print output
       debug:
