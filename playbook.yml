@@ -1,0 +1,26 @@
+# How to run: ansible-playbook playbook.yml
+- name: Get Oracle Database Names
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Import role ar_orcl
+      set_fact:
+        ar_orcl_db_sql_user: "{{ db_username }}"
+    - name: Install cx_Oracle Python module
+      pip:
+        name: cx_Oracle
+        state: present
+    - name: Execute SQL to get Schemas from DB
+      ibre5041.ansible_oracle_modules.oracle_sql:
+        username: "{{ db_username }}"
+        password: "{{ db_password }}"
+        hostname: "{{ db_host }}"
+        service_name: "{{ db_sid }}"
+        port: "{{ db_port }}"
+        #sql: "SELECT username FROM dba_users"
+        sql: "SELECT NAME FROM v$database"
+      register: schema_result
+    - name: print output
+      debug:
+        var: schema_result
