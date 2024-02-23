@@ -1,0 +1,6 @@
+---
+# To run: ansible-galaxy collection install -r collections/requirements.yml
+collections:
+  - name: https://github.com/ibre5041/ansible_oracle_modules.git
+    type: git
+    version: main
