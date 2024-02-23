@@ -1,6 +1,6 @@
 # How to run: ansible-playbook playbook.yml
 - name: Get Oracle Database Names
-  hosts: all
+  hosts: localhost
   gather_facts: false
 
   tasks:
@@ -20,6 +20,7 @@
         port: "{{ db_port }}"
         #sql: "SELECT username FROM dba_users"
         sql: "SELECT NAME FROM v$database"
+      delegate_to: 127.0.0.1
       register: schema_result
     - name: print output
       debug:
