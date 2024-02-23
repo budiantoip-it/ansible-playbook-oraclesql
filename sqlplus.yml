@@ -1,6 +1,6 @@
 # How to run: ansible-playbook playbook.yml
 - name: Get Oracle Database Names
-  hosts: all
+  hosts: localhost
   gather_facts: false
 
   tasks:
