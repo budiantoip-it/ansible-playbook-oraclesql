@@ -9,6 +9,10 @@
         ar_orcl_db_sql_user: "{{ ar_orcl_db_sql_user }}"
     # To install cx_Oracle package manually, run this command from the terminal:
     # /usr/libexec/platform-python -m pip install --user cx_Oracle
+    - name: pip self-update
+      pip:
+        name: pip
+        state: latest
     - name: Install cx_Oracle Python module
       pip:
         name: cx_Oracle
