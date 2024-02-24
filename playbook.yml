@@ -7,12 +7,12 @@
     - name: Import role ar_orcl
       set_fact:
         ar_orcl_db_sql_user: "{{ ar_orcl_db_sql_user }}"
-    # Installed the cx_Oracle dependency manually, by running this command from the terminal:
+    # To install cx_Oracle package manually, run this command from the terminal:
     # /usr/libexec/platform-python -m pip install --user cx_Oracle
-    # - name: Install cx_Oracle Python module
-    #   pip:
-    #     name: cx_Oracle
-    #     state: present
+    - name: Install cx_Oracle Python module
+      pip:
+        name: cx_Oracle
+        state: latest
     - name: Execute SQL to get Schemas from DB
       ibre5041.ansible_oracle_modules.oracle_sql:
         username: "{{ ar_orcl_db_sql_user }}"
@@ -23,6 +23,7 @@
         port: "{{ ar_orcl_svc_port }}"
         #sql: "SELECT username FROM dba_users"
         sql: "SELECT NAME FROM v$database"
+      delegate_to: 127.0.0.1
       register: schema_result
     - name: print output
       debug:
