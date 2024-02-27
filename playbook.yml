@@ -17,6 +17,7 @@
       pip:
         name: cx_Oracle
         state: present
+        extra_args: "--user"
     - name: Execute SQL to get Schemas from DB
       ibre5041.ansible_oracle_modules.oracle_sql:
         username: "{{ ar_orcl_db_sql_user }}"
@@ -28,6 +29,7 @@
         #sql: "SELECT username FROM dba_users"
         sql: "SELECT NAME FROM v$database"
       delegate_to: 127.0.0.1
+      become: false
       register: schema_result
     - name: print output
       debug:
