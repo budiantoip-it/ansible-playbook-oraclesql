@@ -9,14 +9,14 @@
         ar_orcl_db_sql_user: "{{ ar_orcl_db_sql_user }}"
     # To install cx_Oracle package manually, run this command from the terminal:
     # /usr/libexec/platform-python -m pip install --user cx_Oracle
-    - name: pip self-update
-      pip:
-        name: pip
-        state: latest
+    # - name: pip self-update
+    #   pip:
+    #     name: pip
+    #     extra_args: --upgrade
     - name: Install cx_Oracle Python module
       pip:
         name: cx_Oracle
-        state: latest
+        state: present
     - name: Execute SQL to get Schemas from DB
       ibre5041.ansible_oracle_modules.oracle_sql:
         username: "{{ ar_orcl_db_sql_user }}"
